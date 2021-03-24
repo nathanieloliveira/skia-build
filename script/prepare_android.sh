@@ -16,3 +16,4 @@ apt-get install ninja-build fontconfig libfontconfig1-dev libglu1-mesa-dev curl 
 
 wget https://dl.google.com/android/repository/android-ndk-r22-linux-x86_64.zip
 unzip -q android-ndk-r22-linux-x86_64.zip -d /tmp
+rm android-ndk-r22-linux-x86_64.zip

@@ -114,3 +114,60 @@ jobs:
       - run: python3 script/release.py --android --android-target-cpu arm64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  android-arm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: sudo ./script/prepare_android.sh
+      - run: python3 script/check_release.py --version ${{ env.version }} --android --android-target-cpu arm
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: PATH=/usr/lib/binutils-2.26/bin:$PATH python3 script/checkout.py --version ${{ env.version }}
+      - run: PATH=/usr/lib/binutils-2.26/bin:$PATH python3 script/build.py --android --ndk-dir /tmp/android-ndk-r22 --android-target-cpu arm
+      - run: PATH=/usr/lib/binutils-2.26/bin:$PATH python3 script/archive.py --android --android-target-cpu arm
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Skia-${{ env.version }}-android-Release-arm.zip
+          path: '*.zip'
+      - run: python3 script/release.py --android --android-target-cpu arm
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  android-x86:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: sudo ./script/prepare_android.sh
+      - run: python3 script/check_release.py --version ${{ env.version }} --android --android-target-cpu x86
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: PATH=/usr/lib/binutils-2.26/bin:$PATH python3 script/checkout.py --version ${{ env.version }}
+      - run: PATH=/usr/lib/binutils-2.26/bin:$PATH python3 script/build.py --android --ndk-dir /tmp/android-ndk-r22 --android-target-cpu x86
+      - run: PATH=/usr/lib/binutils-2.26/bin:$PATH python3 script/archive.py --android --android-target-cpu x86
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Skia-${{ env.version }}-android-Release-x86.zip
+          path: '*.zip'
+      - run: python3 script/release.py --android --android-target-cpu x86
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  android-x64:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: sudo ./script/prepare_android.sh
+      - run: python3 script/check_release.py --version ${{ env.version }} --android --android-target-cpu x64
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: PATH=/usr/lib/binutils-2.26/bin:$PATH python3 script/checkout.py --version ${{ env.version }}
+      - run: PATH=/usr/lib/binutils-2.26/bin:$PATH python3 script/build.py --android --ndk-dir /tmp/android-ndk-r22 --android-target-cpu x64
+      - run: PATH=/usr/lib/binutils-2.26/bin:$PATH python3 script/archive.py --android --android-target-cpu x64
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Skia-${{ env.version }}-android-Release-x64.zip
+          path: '*.zip'
+      - run: python3 script/release.py --android --android-target-cpu x64
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
