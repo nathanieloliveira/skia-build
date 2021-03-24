@@ -101,7 +101,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: sudo ./script/prepare_android.sh
-      - run: python3 script/check_release.py --version ${{ env.version }}
+      - run: python3 script/check_release.py --version ${{ env.version }} --android --android-target-cpu arm64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: PATH=/usr/lib/binutils-2.26/bin:$PATH python3 script/checkout.py --version ${{ env.version }}
