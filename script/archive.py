@@ -15,12 +15,28 @@ def main():
   
   build_type = common.build_type()
   version = common.version()
+  is_android = common.is_android()
 
-  globs = [
-    'out/' + build_type + '-' + common.machine + '/*.a',
-    'out/' + build_type + '-' + common.machine + '/*.lib',
-    'out/' + build_type + '-' + common.machine + '/icudtl.dat',
-    'include/**/*',
+  target = common.archive_name()
+  if target is None:
+    print('--android was defined but --android-target-cpu wasn\'t.')
+    return -1
+
+  if is_android:
+    target_cpu = common.android_target_cpu()
+    globs = [
+      'out/' + build_type + '-android-' + target_cpu + '/*.a',
+      'out/' + build_type + '-android-' + target_cpu + '/*.lib',
+      'out/' + build_type + '-android-' + target_cpu + '/icudtl.dat',
+    ]
+  else:
+    globs = [
+      'out/' + build_type + '-' + common.machine + '/*.a',
+      'out/' + build_type + '-' + common.machine + '/*.lib',
+      'out/' + build_type + '-' + common.machine + '/icudtl.dat',
+    ]
+
+  globs += [
     'modules/particles/include/*.h',
     'modules/skottie/include/*.h',
     'modules/skottie/src/*.h',
@@ -65,7 +81,6 @@ def main():
     "third_party/icu/*.h"
   ]
 
-  target = 'Skia-' + version + '-' + common.system + '-' + build_type + '-' + common.machine + common.classifier() + '.zip'
   print('> Writing', target)
   
   with zipfile.ZipFile(os.path.join(os.pardir, target), 'w', compression=zipfile.ZIP_DEFLATED) as zip:

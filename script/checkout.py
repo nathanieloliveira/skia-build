@@ -43,7 +43,7 @@ def main():
   # Apply patches
   subprocess.check_call(["git", "reset", "--hard"])
   for x in pathlib.Path(os.pardir, 'patches').glob('*.patch'):
-    print("> Applying", x)
+    print("> Applying git patch", x)
     subprocess.check_call(["git", "apply", str(x)])
 
   # git deps
@@ -53,6 +53,15 @@ def main():
     subprocess.check_call(["python", "tools/git-sync-deps"], env=env)
   else:
     subprocess.check_call(["python2", "tools/git-sync-deps"])
+
+  # Apply third_party patches
+  externals = pathlib.Path("third_party/externals").resolve()
+  for x in pathlib.Path(os.pardir, 'patches/external').resolve().glob('*.patch'):
+    print("> Applying third party patch", x)
+    lib = pathlib.Path(externals, str(x.stem))
+    os.chdir(lib)
+    subprocess.check_call(["git", "reset", "--hard"])
+    subprocess.check_call(["git", "apply", str(x)])
 
   return 0
 

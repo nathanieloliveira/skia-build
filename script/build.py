@@ -6,14 +6,24 @@ def main():
   os.chdir(os.path.join(os.path.dirname(__file__), os.pardir, 'skia'))
 
   build_type = common.build_type()
+  is_android = common.is_android()
 
   if build_type == 'Debug':
     args = ['is_debug=true']
   else:
     args = ['is_official_build=true']
 
+  if is_android:
+    print("this is android")
+    android_target_cpu = common.android_target_cpu()
+    if android_target_cpu is None:
+      print("need to set --android-target-cpu")
+      return -1
+    args += ['target_cpu="' + android_target_cpu + '"']
+  else:
+    args += ['target_cpu="' + common.machine + '"']
+
   args += [
-    'target_cpu="' + common.machine + '"',
     'skia_use_system_expat=false',
     'skia_use_system_libjpeg_turbo=false',
     'skia_use_system_libpng=false',
@@ -32,7 +42,11 @@ def main():
     'skia_enable_skottie=true'
   ]
 
-  if 'macos' == common.system:
+  if is_android:
+    args += [
+      'ndk="' + common.ndk_dir() + '"',
+    ]
+  elif 'macos' == common.system:
     args += [
       # 'skia_enable_gpu=true',
       # 'skia_use_gl=true',
@@ -57,7 +71,10 @@ def main():
       'extra_cflags=["-DSK_FONT_HOST_USE_SYSTEM_SETTINGS"]',
     ]
 
-  out = os.path.join('out', build_type + '-' + common.machine)
+  if is_android:
+    out = os.path.join('out', build_type + '-android-' + android_target_cpu)
+  else:
+    out = os.path.join('out', build_type + '-' + common.machine)
   gn = 'gn.exe' if 'windows' == common.system else 'gn'
   subprocess.check_call([os.path.join('bin', gn), 'gen', out, '--args=' + ' '.join(args)])
   ninja = 'ninja.exe' if 'windows' == common.system else 'ninja'

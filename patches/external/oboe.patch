@@ -1,0 +1,21 @@
+From 03d446695511c6ab4c194c157901bb0e48e694eb Mon Sep 17 00:00:00 2001
+From: Nathaniel Salvador de Oliveira <nathanielsoliveira@gmail.com>
+Date: Tue, 23 Mar 2021 16:57:12 -0300
+Subject: include assert.h
+
+
+diff --git a/src/flowgraph/resampler/MultiChannelResampler.h b/src/flowgraph/resampler/MultiChannelResampler.h
+index 8b23d81..b667b53 100644
+--- a/src/flowgraph/resampler/MultiChannelResampler.h
++++ b/src/flowgraph/resampler/MultiChannelResampler.h
+@@ -21,6 +21,7 @@
+ #include <vector>
+ #include <sys/types.h>
+ #include <unistd.h>
++#include <assert.h>
+ 
+ #ifndef MCR_USE_KAISER
+ // It appears from the spectrogram that the HyperbolicCosine window leads to fewer artifacts.
+-- 
+2.25.1
+

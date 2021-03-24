@@ -6,9 +6,13 @@ def main():
   os.chdir(os.path.join(os.path.dirname(__file__), os.pardir, 'skia'))
   version = common.version()
   build_type = common.build_type()
+  is_android = common.is_android()
   os.chdir(os.pardir)
 
-  zip = 'Skia-' + version + '-' + common.system + '-' + build_type + '-' + common.machine + common.classifier() + '.zip'
+  zip = common.archive_name()
+  if zip is None:
+    print('--android was defined but --android-target-cpu wasn\'t.')
+
   if not os.path.exists(zip):
     print('Can\'t find "' + zip + '"')
     return 1
