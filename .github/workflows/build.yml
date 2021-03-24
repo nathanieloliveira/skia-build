@@ -105,7 +105,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: PATH=/usr/lib/binutils-2.26/bin:$PATH python3 script/checkout.py --version ${{ env.version }}
-      - run: PATH=/usr/lib/binutils-2.26/bin:$PATH python3 script/build.py --android --ndk-dir=$ANDROID_NDK_DIR --android-target-cpu arm64
+      - run: PATH=/usr/lib/binutils-2.26/bin:$PATH python3 script/build.py --android --ndk-dir ./ndk/android-ndk-r22 --android-target-cpu arm64
       - run: PATH=/usr/lib/binutils-2.26/bin:$PATH python3 script/archive.py --android --android-target-cpu arm64
       - uses: actions/upload-artifact@v2
         with:

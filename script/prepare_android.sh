@@ -15,5 +15,4 @@ apt-get install git python wget -y
 apt-get install ninja-build fontconfig libfontconfig1-dev libglu1-mesa-dev curl zip wget unzip -y
 
 wget https://dl.google.com/android/repository/android-ndk-r22-linux-x86_64.zip
-unzip android-ndk-r22-linux-x86_64.zip -d ndk
-export ANDROID_NDK_DIR=$(pwd)/ndk/android-ndk-r22
+unzip -q android-ndk-r22-linux-x86_64.zip -d ndk

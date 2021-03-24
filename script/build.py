@@ -14,7 +14,6 @@ def main():
     args = ['is_official_build=true']
 
   if is_android:
-    print("this is android")
     android_target_cpu = common.android_target_cpu()
     if android_target_cpu is None:
       print("need to set --android-target-cpu")
